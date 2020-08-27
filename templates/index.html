@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  
+
+<head>
+  <title>Web ML DAS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* Center the loader */
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #6c757d;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+</style>
+</head>
+
+<body>
+  <div id="loader" style="display:none;"></div>
+  <div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+      <div class="custom-menu">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fa fa-bars"></i>
+          <span class="sr-only">Toggle Menu</span>
+        </button>
+      </div>
+      <h1><a href="index.html" class="logo">Web ML DAS</a></h1>
+      <ul class="list-unstyled components mb-5">
+        <li class="active">
+          <a href="index.html"><span class="fa fa-home mr-3"></span> Homepage</a>
+        </li>
+        <li>
+          <a href="index.html"><span class="fa fa-user mr-3"></span>Segy File Processing</a>
+        </li>
+        <li>
+          <a href="model_upload.html"><span class="fa fa-sticky-note mr-3"></span>Model Selection</a>
+        </li>
+        <li>
+          <a href="obspy_plot.html"><span class="fa fa-sticky-note mr-3"></span>Obspy Plots</a>
+        </li>
+        <li>
+          <a href="anomaly_detection.html"><span class="fa fa-paper-plane mr-3"></span>Anomaly Detection</a>
+        </li>
+        <li>
+          <a href="#"><span class="fa fa-paper-plane mr-3"></span> Information</a>
+        </li>
+      </ul>
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content" class="p-4 p-md-5 pt-5 animate-bottom"  id="myDiv">
+      <h2 class="mb-4">Seg-y File Processing</h2>
+      <div class="col-md-12" id="filedetails">
+        <form action="{{ url_for('processdata') }}" method="POST">
+          {{ form.csrf }}
+          <div class="form-group" >
+            <div class="col-md-12">
+              <div class="row">
+                <!-- <div class="col-md-4">
+                  <label for="filename">Enter Segy File Name</label>
+                  <input type="file" name="file" id="filename" />
+                </div> -->
+                <div class="col-md-4">
+                  <label for="files">Enter the Seg-y file name</label>
+                <select id="files" name="files" method="GET" action="/">
+                  <option value="select">Select input file</option>
+                  {% for file in files[:] %}
+                   
+                    <option value="{{file}}">{{file}}</option>
+                  {% endfor %}
+                </select>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="minchannelrange">Minimum Channel Range</label>
+                  <input type="number" id="minchannelrange" name="minchannelrange" placeholder="Min Channel Range?">
+                </div>
+                <div class="col-md-4">
+                  <label for="maxchannelrange">Maximum Channel Range</label>
+                  <input type="number" id="maxchannelrange" name="maxchannelrange" placeholder="Max Channel Range?">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="framelen">Frame Length:</label>
+                  <input type="number" id="framelen" name="framelen" placeholder="Frame Length">
+                </div>
+                <div class="col-md-4">
+                  <label for="samplingrate">Sampling Rate:</label>
+                  <input type="number" id="samplingrate" name="samplingrate" placeholder="Enter a samplingrate.">
+                </div>
+              </div>
+
+
+
+
+
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="dsfactor">Down Sample Factor:</label>
+                  <input type="number" id="dsfactor" name="dsfactor" placeholder="Down sample factor.">
+                </div>
+                <div class="col-md-4">
+                  <label for="filters">Enter Filter Type: &nbsp; &nbsp; &nbsp;</label>
+                  
+                  <select name="filters" id="filters" method="GET" action="/">
+                    <option value="select">Select filter type</option>
+                    {% for filter in filters[:] %}
+                      <option value="{{filter}}">{{filter}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <br>
+
+            </div>
+          </div>
+            <br>
+
+
+           
+            <center style="    padding-right: 400px;">
+              <button type="submit" class="btn" onclick="myFunction()" style="color: #fff;background-color: #67809F;
+   border-color: #67809F;">Submit</button>
+          </center>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <script>
+    var myVar;
+    
+    function myFunction() {
+      document.getElementById("loader").style.display = "block";
+      document.getElementById("myDiv").style.display = "none";
+      document.getElementById("filedetails").style.display = "none";
+      myVar = setTimeout(showPage, 15000);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("myDiv").style.display = "block";
+      document.getElementById("filedetails").style.display = "block";
+    }
+    </script>
+</body>
+
+</html>

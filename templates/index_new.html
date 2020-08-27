@@ -1,0 +1,92 @@
+<html>
+  <head>
+     <title>WebML DAS Demo</title>
+     <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+  <body>
+
+    <div class="container"><br>
+      <center>
+        <h2>WebML DAS Anomaly Detection Demo</h2>
+      </center>
+    </div>
+	
+
+    <div class=container"><br>
+    <div class="row">
+
+    <div class="col-md-12">
+      <form action = "{{ url_for('processdata') }}" method="post" role="form" enctype="multipart/form-data">
+        {{ form.csrf }}
+        <div class="form-group">
+		<div class="col-md-12">
+		<div class="col-md-4">
+		  <label for="filename">Enter Segy File Name</label>
+		  <input type="file" name="file" id="filename" />  
+		  
+		</div>
+		  <br>
+	<br>
+		  <div class="col-md-4">
+          <label for="minchannelrange">Minimum Channel Range</label>
+          <input type="number" class="form-control" id="minchannelrange" name="minchannelrange" placeholder="Min Channel Range?">
+		  </div>
+            <br>
+		 <div class="col-md-4">
+		  <label for="maxchannelrange">Maximum Channel Range</label>
+          <input type="number" class="form-control" id="maxchannelrange" name="maxchannelrange" placeholder="Max Channel Range?">
+		  </div>
+	    <br>
+		<div class="col-md-4">
+	  <label for="framelen">Frame Length:</label>
+	  <input type="number" class="form-control" id="framelen" name="framelen" placeholder="Frame Length">
+	  </div>
+	    <br>
+		<div class="col-md-4">
+	  <label for="samplingrate">Sampling Rate:</label>
+	  <input type="number" class="form-control" id="samplingrate" name="samplingrate" placeholder="Enter a samplingrate.">
+	  </div>
+	   <br>
+	   <div class="col-md-4">
+	  <label for="dsfactor">Down Sample Factor:</label>
+	  <input type="dsfactor" class="form-control" id="dsfactor" name="dsfactor" placeholder="Enter the down sample factor.">
+      </div>
+
+	</div>
+        <br>													   
+
+        <center>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </center>
+      </form>
+
+      <br>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+
+        {% for message in messages %}
+            {% if "Error" not in message[1]: %}
+                <div class="alert alert-info">
+                <strong>Success! </strong> {{ message[1] }}
+                </div>
+            {% endif %}
+
+            {% if "Error" in message[1]: %}
+                <div class="alert alert-danger">
+                <strong>Error: </strong> {{ message[1] }}
+                </div>
+            {% endif %}
+        {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    </div>
+    <br>
+    </div>
+    </div>
+  </body>
+</html>

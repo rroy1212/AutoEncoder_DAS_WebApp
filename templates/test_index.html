@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>Anomaly Detection for Spectrogram Plots</h2>
+
+<div class="col-md-12">
+        
+            <div id="imagePreview">
+                <img src={{data.path}} width="500" height="333">
+            </div>
+    
+</div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="col-md-4">
+    <button type="button" class="btn btn-primary btn-lg " id="btn-predict">Predict!</button>
+</div>
+
+<!-- <div class="loader" style="display:none;">
+</div> -->
+
+<div class="col-md-4">
+<h3 id="result">
+<span>{{data.result}}</span>
+</h3>
+</div>
+
+
+
+{% endblock %}
